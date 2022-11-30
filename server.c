@@ -98,7 +98,6 @@ char *head_request(char *contents, int nfd, char *request){
    result = malloc(1 + strlen(period) + strlen(contents));
    strcpy(result, period);
    strcat(result, contents);
-   printf("%s\n", result);
    result = head_code(result, nfd);
    return result;
 }
