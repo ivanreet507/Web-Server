@@ -159,6 +159,7 @@ void cgi_no_args(char *contents, char *request, int nfd){
    args_array[0] = prog_name;
    args_array[1] = '\0';
    execute_request(file_pid, prog_name, args_array, nfd);
+   free(contents);
 }
 
 void cgi_args(char *contents, char *request, int nfd){
@@ -174,6 +175,7 @@ void cgi_args(char *contents, char *request, int nfd){
       array_list_add_to_end(array_list, arguments);
    }
    execute_request(file_pid, separate, array_list -> elements, nfd);
+   list_free(array_list);
 }
 
 void cgi_support(char *contents, char *request, int nfd){
@@ -192,6 +194,7 @@ void cgi_support(char *contents, char *request, int nfd){
    }
    else{
       cgi_no_args(duplicate, request, nfd);
+      free(duplicate);
    }
 }
 
