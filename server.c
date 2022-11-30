@@ -107,7 +107,7 @@ void get_request(int nfd, char *result){
    int fd;
    int number;
    char buffer[ARR_SIZE];
-   if(result == NULL){
+   if(strcmp(result, "") == 0){
       response_400(nfd);
    }
    if((fd = open(result, O_RDONLY)) == -1){
@@ -134,7 +134,7 @@ void execute_request(pid_t file_pid, char *prog_name, char **args_array, int nfd
       }
       dup2(fd, 1);
       close(fd);
-      if(prog_name == NULL){
+      if(strcmp(prog_name, "") == 0){
          response_400(nfd);
       }
       execv(prog_name, args_array);
@@ -224,6 +224,9 @@ void manage_args(char *copy, int nfd){
          result = head_request(dup, nfd, request);
          get_request(nfd, result);
       }
+      else{
+         response_400(nfd);
+      }
    }
    free(req);
    free(slash_check);
@@ -242,7 +245,7 @@ void handle_request(int nfd)
       close(nfd);
       return;
    }
-   while ((num = getline(&line, &size, network)) >= 0){
+   while((num = getline(&line, &size, network)) >= 0){
       copy = line;
       manage_args(copy, nfd);
    }
@@ -256,7 +259,7 @@ void wait_signal(){
    int pid;
    while((pid = waitpid(0, &status, WNOHANG)) > 0) {
       if(WIFEXITED(status) != 0 && WEXITSTATUS(status) != 0){
-         perror("wait failed");
+         return;
       }
    } 
 }
