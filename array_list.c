@@ -7,6 +7,7 @@
 #include<string.h>
 #include "array_list.h"
 
+
 ArrayList *array_list_new() {
   char **str = malloc(5 * sizeof(char *));
   ArrayList *array_list = malloc(sizeof(ArrayList));
